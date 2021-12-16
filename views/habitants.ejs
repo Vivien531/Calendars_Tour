@@ -1,0 +1,77 @@
+<%- include('components/nav'); %>
+
+  <div class="container-fluid">
+
+    <div class="pmd-card col-12 col-lg-6 mx-auto toppedCard" style="margin-bottom:2vh;">
+      <div class="pmd-card-body form-row d-flex justify-content-center align-items-center">
+        <div class="form-group pmd-textfield pmd-textfield-floating-label col-11 col-md-10 col-lg-6">
+          <label for="search">Rechercher (Nom, Adresse ... )</label>
+          <input name="search" id="search" type="text" class="form-control">
+        </div>
+        <div class="d-flex">
+          <button type="button" class="btn pmd-btn-outline pmd-ripple-effect btn-primary marginedButtons" name="button" onclick="return search()">Rechercher
+            <i class="fas fa-search marginedIcons"></i>
+          </button>
+          <a href="/habitants" type="button" class="btn pmd-btn-outline pmd-ripple-effect btn-primary marginedButtons">Annuler
+            <i class="fas fa-times marginedIcons"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <table class="pmd-table table table-hover">
+      <thead id="customThead">
+        <tr>
+          <th>
+            <b>Adresse</b>
+          </th>
+          <th>
+            <b>Nom</b>
+          </th>
+          <th>
+            <b>Don</b>
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% habitants.forEach(function(habitant) { %>
+          <tr onclick="window.location='/habitant/<%= habitant._id %>';">
+            <td><%= habitant.address %></td>
+            <td><%= habitant.lastName %>
+              <%= habitant.name %></td>
+            <% if (habitant.given == "notSeen") { %>
+              <td>Non Vu</td>
+            <% } %>
+            <% if (habitant.given == "declined") { %>
+              <td>Refusé</td>
+            <% } %>
+            <% if (habitant.given != "declined" && habitant.given != "notSeen") { %>
+              <td><%= habitant.given %>€</td>
+            <% } %>
+          </tr>
+          <% }) %>
+          </tbody>
+        </table>
+        <% if (habitants.length < 1) { %>
+          <p class="text-center">Aucun habitant trouvé</p>
+        <% } %>
+      </div>
+
+      <script type="text/javascript">
+        var searchInput = document.getElementById('search');
+
+        function search() {
+          var form = document.createElement("form");
+          form.method = "GET";
+          form.action = "/habitants/" + document.getElementById('search').value;
+          document.body.appendChild(form);
+          form.submit();
+        }
+
+        searchInput.addEventListener("keydown", function(e) {
+          if (e.keyCode === 13) 
+            search();
+          }
+        );
+      </script>

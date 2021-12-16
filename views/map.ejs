@@ -1,0 +1,219 @@
+<%- include('components/nav'); %>
+
+  <div class="pmd-card col-12 col-md-11 mx-auto toppedCard">
+    <div class="pmd-card-body">
+      <div class="btn-group-toggle d-flex flex-row justify-content-center" data-toggle="buttons">
+        <div class="marginedButtons">
+          <label id="blueBtn" class="d-none d-md-block btn pmd-btn-outline pmd-ripple-effect btn-primary active">
+            <input class="d-none" id="displayNotSeenMarkers" type="checkbox" checked="checked" autocomplete="off">
+            Non vus
+            <i class="marginedIcons fas fa-calendar"></i>
+          </label>
+          <label id="blueBtn" class="d-block d-md-none btn pmd-btn-outline pmd-ripple-effect btn-primary btn-lg active">
+            <input class="d-none" id="displayNotSeenMarkersLittle" type="checkbox" checked="checked" autocomplete="off">
+            <i class="fas fa-calendar"></i>
+          </label>
+        </div>
+        <div class="marginedButtons">
+          <label id="greenBtn" class="d-none d-md-block btn pmd-btn-outline pmd-ripple-effect btn-success">
+            <input class="d-none" id="displayAcceptedMarkers" type="checkbox" autocomplete="off">
+            Acceptés
+            <i class="marginedIcons fas fa-calendar-check"></i>
+          </label>
+          <label id="greenBtn" class="d-block d-md-none btn pmd-btn-outline pmd-ripple-effect btn-success btn-lg">
+            <input class="d-none" id="displayAcceptedMarkersLittle" type="checkbox" autocomplete="off">
+            <i class="fas fa-calendar-check"></i>
+          </label>
+        </div>
+        <div class="marginedButtons">
+          <label id="redBtn" class="d-none d-md-block btn pmd-btn-outline pmd-ripple-effect btn-danger">
+            <input class="d-none" id="displayDeclinedMarkers" type="checkbox" autocomplete="off">
+            Refusés
+            <i class="marginedIcons fas fa-calendar-times"></i>
+          </label>
+          <label id="redBtn" class="d-block d-md-none btn pmd-btn-outline pmd-ripple-effect btn-danger btn-lg">
+            <input class="d-none" id="displayDeclinedMarkersLittle" type="checkbox" autocomplete="off">
+            <i class="fas fa-calendar-times"></i>
+          </label>
+        </div>
+      </div>
+
+      <div class="mx-auto" id="map"></div>
+    </div>
+  </div>
+
+  <div class="pmd-card col-11 col-md-5 mx-auto" style="margin-top:2vh; margin-bottom:2vh; display: none;" id="card">
+    <div class="pmd-card-body text-center">
+      <p id="name"></p>
+      <p id="address"></p>
+      <p id="given"></p>
+      <!-- <div class="d-flex flex-row justify-content-center" style="margin-bottom:10px;"> -->
+      <!-- <div class="marginedButtons"> -->
+      <a id="link" href="" type="button" name="button" class="btn pmd-btn-outline pmd-ripple-effect btn-primary">Page habitant
+        <i class="marginedIcons fas fa-user"></i>
+      </a>
+      <!-- </div> -->
+      <!-- </div> -->
+    </div>
+  </div>
+
+  <script defer="defer" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFIad86hvh5HRUGYn-Wctw7HVSBsYH6Ok&callback=initMap&v=weekly&map_ids=39ee332af62ffb8d"></script>
+  <script type="text/javascript">
+    var habitants = <%- JSON.stringify(habitants) %>,
+      marker,
+      i,
+      map,
+      icon,
+      notSeenMarkers = [],
+      acceptedMarkers = [],
+      declinedMarkers = [];
+
+    const zone_1 = [
+      {
+        lat: 44.301107,
+        lng: 0.760735
+      }, {
+        lat: 44.269879,
+        lng: 0.760295
+      }, {
+        lat: 44.267040,
+        lng: 0.790808
+      }, {
+        lat: 44.298111,
+        lng: 0.789817
+      }
+    ];
+
+    const zone_2 = [
+      {
+        lat: 44.301107,
+        lng: 0.760735
+      }, {
+        lat: 44.269879,
+        lng: 0.760295
+      }, {
+        lat: 44.271851,
+        lng: 0.739144
+      }, {
+        lat: 44.296692,
+        lng: 0.736831
+      }
+    ];
+
+    function addPoly(coorArray, sColor, weight, fColor) {
+      var poly = new google.maps.Polygon({paths: coorArray, strokeColor: sColor, strokeWeight: weight, fillColor: fColor});
+      return poly;
+    };
+
+    function displayInfos(habitant) {
+      if (document.getElementById("card").style.display == "none")
+        document.getElementById("card").style.display = "block";
+
+      document.getElementById("name").innerHTML = habitant.name + ' ';
+      document.getElementById("address").innerHTML = habitant.address;
+      document.getElementById("link").href = "/habitant/" + habitant._id;
+
+      if (habitant.given == "notSeen")
+        document.getElementById("given").innerHTML = habitant.visits + " Passages";
+      else if (habitant.given == "declined")
+        document.getElementById("given").innerHTML = "Calendrier Refusé";
+      else
+        document.getElementById("given").innerHTML = "Don : " + habitant.given + "€";
+      }
+
+    function toggleVisibility(show, markers) {
+      for (var i = 0, length = markers.length; i < length; i++)
+        markers[i].setVisible(show);
+      }
+
+    function initMap() {
+      map = new google.maps.Map(document.getElementById("map"), {
+        center: {
+          lat: 44.2785781,
+          lng: 0.7611917
+        },
+        zoom: 13,
+        mapId: "39ee332af62ffb8d"
+      });
+
+      $('#displayNotSeenMarkers').on('change', function() {
+        toggleVisibility(this.checked, notSeenMarkers)
+      });
+      $('#displayNotSeenMarkersLittle').on('change', function() {
+        toggleVisibility(this.checked, notSeenMarkers)
+      });
+      $('#displayDeclinedMarkers').on('change', function() {
+        toggleVisibility(this.checked, declinedMarkers)
+      });
+      $('#displayDeclinedMarkersLittle').on('change', function() {
+        toggleVisibility(this.checked, declinedMarkers)
+      });
+      $('#displayAcceptedMarkers').on('change', function() {
+        toggleVisibility(this.checked, acceptedMarkers)
+      });
+      $('#displayAcceptedMarkersLittle').on('change', function() {
+        toggleVisibility(this.checked, acceptedMarkers)
+      });
+
+      for (i = 0; i < habitants.length; i++) {
+        if (habitants[i].given == "notSeen" && habitants[i].visits == 0)
+          icon = {
+            url: "/src/blue.png"
+          };
+        else if (habitants[i].given == "notSeen" && habitants[i].visits >= 1)
+          icon = {
+            url: "/src/blue2.png"
+          }
+        else if (habitants[i].given == "declined")
+          icon = {
+            url: "/src/red.png"
+          }
+        else if (habitants[i].given != "notSeen" && habitants[i].given != "declined")
+          icon = {
+            url: "/src/green.png"
+          }
+
+        var marker = new google.maps.Marker({
+          position: new google.maps.LatLng(habitants[i].geolocation.lat, habitants[i].geolocation.lng),
+          map: map,
+          icon: icon
+        });
+
+        if (habitants[i].given == "notSeen")
+          notSeenMarkers.push(marker)
+        else if (habitants[i].given == "declined")
+          declinedMarkers.push(marker)
+        else if (habitants[i].given != "notSeen" && habitants[i].given != "declined")
+          acceptedMarkers.push(marker)
+
+        google.maps.event.addListener(marker, 'click', (function(marker, i) {
+          return function() {
+            displayInfos(habitants[i]);
+          }
+        })(marker, i));
+      }
+
+      toggleVisibility(false, declinedMarkers)
+      toggleVisibility(false, acceptedMarkers)
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
+            map: map,
+            icon: {
+              url: "http://maps.google.com/mapfiles/kml/shapes/man.png",
+              scaledSize: new google.maps.Size(35, 35)
+            }
+          });
+        })
+      }
+
+      // var first = addPoly(zone_1, 'green', 0.5, 'green');
+      // first.setMap(map);
+      //
+      // var second = addPoly(zone_2, 'red', 0.5, 'red');
+      // second.setMap(map);
+
+    }
+  </script>

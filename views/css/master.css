@@ -1,0 +1,111 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #F5F7F9;
+}
+
+* {
+  font-family: 'Roboto';
+}
+
+#map {
+  height: 60vh;
+  width: 100%;
+}
+
+#habitantMap {
+  height: 30vh;
+}
+
+.margined {
+  margin: 3px;
+}
+
+p {
+  font-size: 1.2em;
+}
+
+.marginedIcons {
+  margin-left: 0.4vh;
+}
+
+.marginedButtons {
+  margin-left: 0.8vw;
+  margin-right: 0.8vw;
+}
+
+.marginedHeight {
+  margin-top: 0.8vh;
+  margin-bottom: 0.8vh;
+}
+
+.habitantCard p {
+  font-size: 1.3em;
+  text-align: center;
+}
+
+.toppedCard {
+  margin-top: 4vh;
+}
+
+.toppedCardMiddle {
+  margin-top: 6vh;
+}
+
+#blueBtn:not(:disabled):not(.disabled).active,
+#blueBtn:not(:disabled):not(.disabled):active {
+  color: #fff;
+  background-color: blue;
+  border-color: blue;
+}
+
+#greenBtn:not(:disabled):not(.disabled).active,
+#greenBtn:not(:disabled):not(.disabled):active {
+  color: #fff;
+  background-color: green;
+  border-color: green;
+}
+
+#redBtn:not(:disabled):not(.disabled).active,
+#redBtn:not(:disabled):not(.disabled):active {
+  color: #fff;
+  background-color: red;
+  border-color: red;
+}
+
+#customThead {
+  background-color: black !important;
+}
+
+#customThead tr th {
+  color: white;
+  font-size: 1em;
+}
+
+#navLogo {
+  height: 6.5vh;
+}
+
+.navbar {
+  background-color: black !important;
+}
+
+.nav-link {
+  color: gray !important;
+  transition: color 0.3s linear;
+}
+
+.nav-link:hover {
+  color: white !important;
+}
+
+/* chrome autocomplete blue input background fix */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+}

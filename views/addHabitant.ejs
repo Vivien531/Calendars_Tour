@@ -1,0 +1,90 @@
+<%- include('components/nav'); %>
+
+<div class="pmd-card col-11 col-md-6 mx-auto toppedCardMiddle">
+  <div class="pmd-card-body">
+    <p class="text-center" style="margin-bottom:1.5vh;">
+      <i class="fas fa-user-plus fa-2x"></i>
+    </p>
+    <%- include('./partials/messages'); %>
+    <form action="/addHabitant" method="POST" onsubmit="return valid();">
+      <div class="checkbox pmd-default-theme text-center mt-4">
+        <label class="pmd-checkbox pmd-checkbox-ripple-effect">
+          <input type="checkbox" id="autoloc" name="autoloc">
+          <span>Utiliser ma Position</span>
+          <small id="success" class="d-none"><br>Position Trouvée</small>
+        </label>
+      </div>
+
+      <input type="hidden" id="latitude" name="latitude" value="">
+      <input type="hidden" id="longitude" name="longitude" value="">
+
+      <div class="form-group pmd-textfield pmd-textfield-floating-label">
+        <label for="lastName">Nom</label>
+        <input id="lastName" class="form-control" type="text" name="name">
+      </div>
+
+      <div class="form-group pmd-textfield pmd-textfield-floating-label" id="adresseContainer">
+        <label for="address">Adresse</label>
+        <input type="text" id="address" class="form-control" name="address">
+      </div>
+
+      <div class="form-group pmd-textfield pmd-textfield-floating-label" id="villeContainer">
+        <label for="city">Ville</label>
+        <select id="city" class="form-control" name="cpcity">
+          <option value="47340 Laroque-Timbaut">Laroque-Timbaut</option>
+          <option value="47340 Cassignas">Cassignas</option>
+          <option value="47340 La Croix-Blanche">La Croix-Blanche</option>
+          <option value="47340 Monbalen">Monbalen</option>
+        </select>
+      </div>
+
+      <div class="d-flex flex-row justify-content-center" style="margin-bottom:10px;">
+        <div class="marginedButtons">
+          <button type="submit" class="btn pmd-btn-outline pmd-ripple-effect btn-success">Ajouter
+            <i class="marginedIcons fas fa-user-plus"></i>
+          </button>
+        </div>
+        <div class="marginedButtons">
+          <a type="button" class="btn pmd-btn-outline pmd-ripple-effect btn-danger" href="/dashboard">Annuler
+            <i class="marginedIcons fas fa-undo-alt"></i>
+          </a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script type="text/javascript">
+  function success(position) {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+    document.getElementById('latitude').value = latitude;
+    document.getElementById('longitude').value = longitude;
+    document.getElementById('success').classList.remove("d-none");
+  }
+
+  function error() {
+    console.log('error');
+  }
+
+  if (!navigator.geolocation) {
+    console.log('pas supporté');
+  } else {
+    console.log('...');
+    navigator.geolocation.getCurrentPosition(success, error);
+  }
+
+  function valid() {
+    return confirm("Êtes vous sur ?");
+  }
+
+  document.getElementById('autoloc').addEventListener('change', function() {
+    if (this.checked) {
+      document.getElementById('adresseContainer').classList.add("d-none");
+      document.getElementById('villeContainer').classList.add("d-none");
+    } else {
+      document.getElementById('adresseContainer').classList.remove("d-none");
+      document.getElementById('villeContainer').classList.remove("d-none");
+    }
+  });
+</script>

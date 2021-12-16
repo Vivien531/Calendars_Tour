@@ -1,0 +1,64 @@
+<%- include('components/nav'); %>
+
+<div class="pmd-card col-11 col-md-6 mx-auto toppedCardMiddle">
+  <div class="pmd-card-body">
+    <p class="text-center" style="margin-bottom:1.5vh;">
+      <i class="fas fa-user-cog fa-2x"></i>
+    </p>
+    <form action="/updateHabitant" method="POST" onsubmit="return valid();">
+      <input type="hidden" name="id" value="<%= habitant._id %>">
+
+      <div class="form-group pmd-textfield pmd-textfield-floating-label">
+        <label for="name">Nom</label>
+        <input id="name" class="form-control" type="text" name="name" value="<%= habitant.name %>">
+      </div>
+
+      <div class="form-group pmd-textfield pmd-textfield-floating-label">
+        <label for="address">Adresse</label>
+        <input type="text" id="address" class="form-control" name="address" required="required" value="<%= habitant.address %>">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group pmd-textfield pmd-textfield-floating-label col-md-8">
+          <label for="city">Ville</label>
+          <input type="text" id="city" class="form-control" name="city" value="<%= habitant.city %>">
+        </div>
+        <div class="form-group pmd-textfield pmd-textfield-floating-label col-md-4">
+          <label for="cp">Code Postal</label>
+          <input id="cp" class="form-control" type="number" name="cp" value="<%= habitant.cp %>">
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-center mb-3">
+        <a href="/customMarker/<%- habitant._id %>" type="button" class="btn pmd-btn-outline pmd-ripple-effect btn-primary">Modifier la position du marker
+          <i class="marginedIcons fas fa-map-marker"></i>
+        </a>
+      </div>
+
+      <div class="d-flex flex-row justify-content-center" style="margin-bottom:10px;">
+        <div class="marginedButtons">
+          <button type="submit" class="btn pmd-btn-outline pmd-ripple-effect btn-success">Modifier
+            <i class="marginedIcons fas fa-user-cog"></i>
+          </button>
+        </div>
+        <div class="marginedButtons">
+          <a type="button" class="btn pmd-btn-outline pmd-ripple-effect btn-danger" href="/habitant/<%= habitant._id %>">Annuler
+            <i class="marginedIcons fas fa-undo-alt"></i>
+          </a>
+        </div>
+        <div class="marginedButtons">
+          <button type="submit" form="deleteForm" class="btn pmd-btn-outline pmd-ripple-effect btn-danger" href="">Supprimer
+            <i class="marginedIcons fas fa-user-times"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+    <form id="deleteForm" class="d-none" action="/deleteHabitant/<%= habitant._id %>" method="GET" onsubmit="return valid();"></form>
+  </div>
+</div>
+
+<script type="text/javascript">
+  function valid() {
+    return confirm("Êtes vous sur ?");
+  }
+</script>

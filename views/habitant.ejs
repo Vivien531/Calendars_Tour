@@ -1,0 +1,97 @@
+<%- include('components/nav'); %>
+
+  <div class="pmd-card col-12 col-md-10 mx-auto habitantCard toppedCard">
+    <div class="pmd-card-body">
+      <%- include('./partials/messages'); %>
+        <p><%= habitant.lastName %>
+          <%= habitant.name %></p>
+        <p><%= habitant.address %></p>
+        <p>Ajouté par :
+          <%= habitant.addBy %></p>
+        <% if (habitant.given == "notSeen") { %>
+          <p>Nombre de passages :
+            <%= habitant.visits %></p>
+        <% } %>
+        <% if (habitant.given == "declined") { %>
+          <p>Refusé</p>
+        <% } %>
+        <% if (habitant.given != "declined" && habitant.given != "notSeen") { %>
+          <p>Don :
+            <%= habitant.given %>€</p>
+        <% } %>
+        <div id="habitantMap"></div>
+      </div>
+      <div class="d-flex flex-row justify-content-center" style="margin-bottom:10px;">
+        <div class="marginedButtons">
+          <a type="button" class="btn pmd-btn-outline pmd-ripple-effect btn-primary" href="/updateHabitant/<%= habitant._id %>">Modifier
+            <i class="marginedIcons fas fa-user-edit"></i>
+          </a>
+        </div>
+        <div class="marginedButtons">
+          <button data-toggle="collapse" data-target="#checkVisit" aria-expanded="false" aria-controls="checkVisit" type="button" class="btn pmd-btn-outline pmd-ripple-effect btn-success" <% if (habitant.given != "notSeen") { %> disabled="disabled" <% } %>>Présent
+            <i class="marginedIcons fas fa-door-open"></i>
+          </button>
+        </div>
+        <div class="marginedButtons">
+          <form onsubmit="return valid();" action="/absent/<%= habitant._id %>" method="get">
+            <button type="submit" class="btn pmd-btn-outline pmd-ripple-effect btn-danger" <% if (habitant.given != "notSeen") { %> disabled="disabled" <% } %>>Absent
+              <i class="marginedIcons fas fa-door-closed"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div class="collapse marginedHeight" id="checkVisit">
+        <div class="pmd-card col-10 col-md-6 mx-auto">
+          <div class="pmd-card-body form-row align-items-center justify-content-center">
+            <form onsubmit="return valid();" id="accepted" action="/accepted/<%= habitant._id %>" method="POST">
+              <div class="form-group pmd-textfield pmd-textfield-floating-label text-center" style="margin-right:3vh;">
+                <label for="given">Don</label>
+                <input type="hidden" name="tourRedirect" value="false">
+                <input name="given" id="given" type="number" class="form-control" required="required">
+              </div>
+            </form>
+            <div class="d-flex flex-row justify-content-center">
+              <div class="marginedButtons">
+                <button type="submit" form="accepted" class="btn pmd-btn-outline pmd-ripple-effect btn-success">Don
+                  <i class="marginedIcons fas fa-check-circle"></i>
+                </button>
+              </div>
+              <div class="marginedButtons">
+                <form onsubmit="return valid();" action="/declined/<%= habitant._id %>" method="get">
+                  <button type="submit" class="btn pmd-btn-outline pmd-ripple-effect btn-danger">Refus
+                    <i class="marginedIcons fas fa-times-circle"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script defer="defer" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFIad86hvh5HRUGYn-Wctw7HVSBsYH6Ok&callback=initMap"></script>
+    <script type="text/javascript">
+      function valid() {
+        return confirm("Êtes vous sur ?");
+      }
+
+      let map;
+
+      function initMap() {
+        map = new google.maps.Map(document.getElementById("habitantMap"), {
+          center: {
+            lat: <%=habitant.geolocation.lat %>,
+            lng: <%=habitant.geolocation.lng %>
+          },
+          zoom: 17
+        });
+        var marker = new google.maps.Marker({
+          position: {
+            lat: <%=habitant.geolocation.lat %>,
+            lng: <%=habitant.geolocation.lng %>
+          },
+          map: map
+        });
+      }
+    </script>

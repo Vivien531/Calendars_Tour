@@ -1,0 +1,35 @@
+<%- include('components/nav'); %>
+
+  <div class="pmd-card col-10 col-md-6 mx-auto toppedCardMiddle">
+    <div class="pmd-card-body">
+      <p class="text-center" style="margin-bottom:1.5vh;">
+        <i class="fa fa-tachometer fa-2x"></i>
+      </p>
+
+      <%- include('./partials/messages'); %>
+        <p class="defaultText text-center">Vous avez récolté
+          <%= user.money %>€</p>
+        <p class="defaultText text-center">Total récolté :
+          <%= total %>€</p>
+        <p class="defaultText text-center">Habitants vus :
+          <%= seenCitizens %>/<%= totalCitizens %></p>
+        <p class="defaultText text-center">Acceptés :
+          <%= acceptedCitizens %>/<%= seenCitizens %></p>
+        <p class="defaultText text-center">Refusés :
+          <%= declinedCitizens %>/<%= seenCitizens %></p>
+
+        <div class="d-flex flex-wrap justify-content-center" style="margin-top:2vh;">
+          <a class="btn pmd-btn-outline pmd-ripple-effect btn-primary margined" type="button" href="/addHabitant">Ajouter un Habitant
+            <i class="marginedIcons fas fa-user-plus"></i>
+          </a>
+          <% if (user.isAdmin == true) { %>
+            <a class="btn pmd-btn-outline pmd-ripple-effect btn-primary margined" type="button" href="/addUser">Ajouter un utilisateur
+              <i class="fas fa-user-circle marginedIcons"></i>
+            </a>
+          <% } %>
+          <a class="btn pmd-btn-outline pmd-ripple-effect btn-primary margined" type="button" href="/updatePassword">Modifier mot de passe
+            <i class="fas fa-key marginedIcons"></i>
+          </a>
+        </div>
+      </div>
+    </div>

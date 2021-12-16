@@ -1,0 +1,33 @@
+<div class="d-flex align-items-center justify-content-center" style="width:100vw;height:100vh;">
+  <div class="col-11 col-md-5">
+    <div class="pmd-card">
+      <div class="pmd-card-body">
+        <div class="container">
+          <h1 class="text-center mb-3">
+            <i class="fas fa-sign-in-alt"></i>
+            Connexion</h1>
+          <%- include('./partials/messages'); %>
+            <form action="/users/login" method="POST">
+
+              <div class="form-group pmd-textfield pmd-textfield-floating-label">
+                <label for="name">Identifiant</label>
+                <input type="text" id="name" class="form-control" name="name" value="<%= typeof name != 'undefined' ? name : '' %>">
+              </div>
+
+              <div class="form-group pmd-textfield pmd-textfield-floating-label">
+                <label for="password">Mot De Passe</label>
+                <input type="password" id="password" class="form-control" name="password" value="<%= typeof password != 'undefined' ? password : '' %>">
+              </div>
+
+              <div class="col-12" style="text-align: center;">
+                <button type="submit" class="btn pmd-btn-outline pmd-ripple-effect btn-primary">Connexion
+                  <i class="fas fa-sign-in-alt marginedIcons"></i>
+                </button>
+              </div>
+            </form>
+            <!-- <p class="lead mt-4"> Vous n'avez pas de compte? <a style="color:blue;" href="/users/register">Créez en un ici</a> </p> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

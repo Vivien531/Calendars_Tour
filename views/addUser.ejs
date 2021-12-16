@@ -1,0 +1,65 @@
+<%- include('components/nav'); %>
+
+  <div class="pmd-card col-10 col-md-6 mx-auto toppedCardMiddle">
+    <div class="pmd-card-body">
+      <p class="text-center" style="margin-bottom:1.5vh;">
+        <i class="fas fa-user-circle fa-2x"></i>
+      </p>
+      <form action="/addUser" method="POST" class="col-md-8 mx-auto">
+        <div class="form-group pmd-textfield pmd-textfield-floating-label">
+          <label for="name">Identifiant</label>
+          <input required="required" type="text" id="name" class="form-control" name="name">
+        </div>
+
+        <div class="form-group pmd-textfield pmd-textfield-floating-label">
+          <label for="propeller-select">Équipe</label>
+          <select disabled="disabled" id="propeller-select" class="form-control" name="ekip" required="required">
+            <option disabled="disabled" >Sélectionner une équipe</option>
+            <option value="zone_1" selected="selected">Équipe 1</option>
+            <option value="zone_2">Équipe 2</option>
+            <option value="zone_3">Équipe 3</option>
+            <option value="zone_4">Équipe 4</option>
+          </select>
+        </div>
+
+        <p class="text-center">Mot de passe temporaire :</p>
+        <div class="d-flex flex-row justify-content-center align-items-center">
+          <div>
+            <input class="form-control" id="tempPassInput" type="text" name="password" readonly="readonly">
+          </div>
+          <div>
+            <button type="button" onclick="copyToClipboard()" class="btn pmd-btn-outline pmd-ripple-effect btn-primary" style="margin-left:1.5vw;">Copier
+              <i class="fa fa-files-o marginedIcons"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="col-12" style="text-align: center; margin-top: 2vh;">
+          <button type="submit" class="btn pmd-btn-outline pmd-ripple-effect btn-primary">Créer le compte
+            <i class="fas fa-user-circle marginedIcons"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script type="text/javascript">
+    function copyToClipboard() {
+      var copyText = document.getElementById("tempPassInput");
+      copyText.select();
+      copyText.setSelectionRange(0, 99999)
+      document.execCommand("copy");
+    }
+
+    function passwordGenerate() {
+      var result = '';
+      var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      var charactersLength = characters.length;
+      for (var i = 0; i < 6; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      }
+      return result;
+    }
+
+    var tempPass = passwordGenerate();
+    document.getElementById('tempPassInput').value = tempPass;
+  </script>

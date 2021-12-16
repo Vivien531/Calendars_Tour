@@ -1,0 +1,14 @@
+$theme-colors: (
+  "primary": blue,
+  "success": green,
+  "danger": red
+);
+
+@import "https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css";
+
+@import "../propellerkit/scss/propeller";
+
+@import "../propellerkit/components/button/css/button.css";
+
+@import "http://fonts.googleapis.com/icon?family=Material+Icons";
+@import "../propellerkit/components/icons/css/google-icons.css";
